@@ -13,7 +13,20 @@ module Syntax =
         | OpMinus
         | OpTimes
         | OpDiv
+    
+    type BinOp = 
+        | OpEqual
+        | OpUnequal
+        | OpLess
+        | OpGreater
+        | OpLessOrEq
+        | OpGreaterOrEq
 
+    type AggregateFunction = 
+        | AggrCount
+        | AggrMax
+        | AggrMin
+        | AggrSum
 
     type PredicateName = 
         | Id of Identifier
@@ -35,6 +48,9 @@ module Syntax =
         | GroundTerm of term : GroundTerm
         | VariableTerm of Identifier
         | ExpressionTerm of Expression
-    
+        | FunctionTerm of name : PredicateName * terms : Term list
+
+    type Atom = 
+        | Atom of name : PredicateName * terms : Term list
 
         
