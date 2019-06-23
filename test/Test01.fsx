@@ -12,6 +12,8 @@ open FParsec
 #r @"SLFormat.dll"
 open SLFormat.CommandOptions
 
+#load @"..\src\SLPotassco\AspCore\Syntax.fs"
+#load @"..\src\SLPotassco\AspCore\Pretty.fs"
 #load @"..\src\SLPotassco\ParseClingo.fs"
 #load @"..\src\SLPotassco\Invoke.fs"
 open SLPotassco.ParseClingo
@@ -30,4 +32,12 @@ let demo02 () =
 let demo03 () = 
     let demoDir = demoDirectory () 
     clingo demoDir [ literal "--version"] [] None
+
+let demo04 () = 
+    let demoDir = demoDirectory ()
+    clingo demoDir [] ["toh_ins.lp"; "toh_enc.lp"] None
+
+//let temp () = 
+//    System.IO.Pipes
+
 

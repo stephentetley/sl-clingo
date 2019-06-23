@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="SLPotassco\AspCore\Syntax.fs" />
+    <Compile Include="SLPotassco\AspCore\Pretty.fs" />
     <Compile Include="SLPotassco\ParseClingo.fs" />
     <Compile Include="SLPotassco\Invoke.fs" />
   </ItemGroup>

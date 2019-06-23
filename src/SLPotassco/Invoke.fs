@@ -9,6 +9,10 @@ module Invoke =
 
     open SLFormat.CommandOptions
     
+    /// To be added to SLFormat...
+    let intLiteral (i : int) : CmdOpt = 
+        i.ToString() |> literal 
+
     let private gringoArgs (options : CmdOpt list) (files : string list): CmdOpt list = 
         let fileArgs = List.map literal files
         options @ fileArgs
@@ -19,7 +23,7 @@ module Invoke =
 
     let private clingoArgs (options : CmdOpt list) (files : string list) (number : int option) : CmdOpt list = 
         let fileArgs = List.map literal files
-        let numberArgs = match number with | None -> [] | Some i -> [ literal <| i.ToString() ]
+        let numberArgs = match number with | None -> [] | Some i -> [ intLiteral i ]
         options @ fileArgs @ numberArgs
 
 
