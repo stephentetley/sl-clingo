@@ -41,6 +41,9 @@ let demo04 () =
     clingo demoDir [] ["toh_ins.lp"; "toh_enc.lp"] None
 
 let demo05 () : ParserResult<Identifier, unit> = 
-    run (pidentifier ()) "p"
+    run pIdentifier "p"
+
+let demo06 () : ParserResult<Identifier, unit> =
+    run pQuotedString "\"Hello\" World"
 
 
