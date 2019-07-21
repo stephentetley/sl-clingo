@@ -4,6 +4,7 @@
 
 namespace SLPotassco.AspCore
 
+
 module Parser =
 
     
@@ -13,8 +14,20 @@ module Parser =
 
     type AspParser<'ans> = Parser<'ans, unit>
 
+    // ************************************************************************
+    // Lexer
+
     let lexeme (parser : AspParser<'a>) : AspParser<'a> = 
         parser .>> spaces
+
+    let token (str : string) : AspParser<string> = 
+        lexeme (pstring str)
+
+    let chartoken (ch : char) : AspParser<char> = 
+        lexeme (pchar ch)
+
+    let parens (p1 : AspParser<'a>) : AspParser<'a> = 
+        between (chartoken '(') (chartoken ')') p1
 
 
     let pIdentifier : AspParser<string> = 
@@ -36,47 +49,100 @@ module Parser =
         lexeme (qString |>> String.concat "")
 
     let pAnonVariable : AspParser<string> = 
-        lexeme (pstring "_")
+        token "_"
 
     let pNumber : AspParser<int> = 
         lexeme (puint32 |>> int)
 
 
     let pNeg : AspParser<string> = 
-        lexeme (pstring "-")
+        token "-"
 
     let pNaf : AspParser<string> = 
-        lexeme (pstring "not")
+        token "not"
 
+    // ************************************************************************
+    // Parser
 
-    let pGroundTerm : AspParser<GroundTerm> = 
-        (pSymbolicConstant |>> SymbolicConstant)
-            <|> (pQuotedString |>> String)
-            <|> (pNumber |>> Number)        // TODO - minus?
-
-
+    let pPredicateName : AspParser<PredicateName> = 
+        (pIdentifier |>> Id)
+            <|> (pQuotedString |>> QuotedName)
+        
+        
     let pAggregateFunction : AspParser<AggregateFunction> = 
-        let aggcount    = pstring "#count"  >>. preturn AggrCount
-        let aggmax      = pstring "#max"    >>. preturn AggrMax
-        let aggmin      = pstring "#min"    >>. preturn AggrMin
-        let aggsum      = pstring "#sum"    >>. preturn AggrSum
-        lexeme (aggcount <|> aggmax <|> aggmin <|> aggsum)
-
+        let aggcount    = token "#count"    >>. preturn AggrCount
+        let aggmax      = token "#max"      >>. preturn AggrMax
+        let aggmin      = token "#min"      >>. preturn AggrMin
+        let aggsum      = token "#sum"      >>. preturn AggrSum
+        aggcount <|> aggmax <|> aggmin <|> aggsum
+        
     let pBinOp : AspParser<BinOp> = 
-        let eq          = pchar '='                         >>. preturn OpEqual
-        let ueq         = (pstring "<>" <|> pstring "!=")   >>. preturn OpUnequal
-        let less        = pchar '<'                         >>. preturn OpLess
-        let greater     = pchar '>'                         >>. preturn OpGreater
-        let lessEq      = pstring "<="                      >>. preturn OpLessOrEq
-        let greaterEq   = pstring ">="                      >>. preturn OpGreaterOrEq
-        lexeme (eq <|> ueq <|> lessEq <|> greaterEq <|> less <|> greater)
+        let eq          = chartoken '='                 >>. preturn OpEqual
+        let ueq         = (token "<>" <|> token "!=")   >>. preturn OpUnequal
+        let less        = chartoken '<'                 >>. preturn OpLess
+        let greater     = chartoken '>'                 >>. preturn OpGreater
+        let lessEq      = token "<="                    >>. preturn OpLessOrEq
+        let greaterEq   = token ">="                    >>. preturn OpGreaterOrEq
+        eq <|> ueq <|> lessEq <|> greaterEq <|> less <|> greater
+        
+        
+    let pMulOp : AspParser<ArithOp> = 
+        let times   = chartoken '*' >>. preturn OpTimes
+        let divide  = chartoken '/' >>. preturn OpDiv
+        times <|> divide
 
+    let pMulOp2 : AspParser<Expression -> Expression -> Expression> = 
+        pMulOp >>= fun op -> preturn (fun e1 e2 ->  ArithmeticExpr(e1,op,e2))
+    
+    let pAddOp : AspParser<ArithOp> = 
+        let plus    = chartoken '+' >>. preturn OpPlus
+        let minus   = chartoken '-' >>. preturn OpMinus
+        plus <|> minus
+    
+    let pAddOp2 : AspParser<Expression -> Expression -> Expression> = 
+        pAddOp >>= fun op -> preturn (fun e1 e2 -> ArithmeticExpr(e1,op,e2))
 
-    let pArithOp : AspParser<ArithOp> = 
-        let plus    = pchar '+' >>. preturn OpPlus
-        let minus   = pchar '-' >>. preturn OpMinus
-        let times   = pchar '*' >>. preturn OpTimes
-        let divide  = pchar '/' >>. preturn OpDiv
-        lexeme (plus <|> minus <|> times <|> divide)
+    let pVariableTerm : AspParser<Term> = 
+        (pVariable <|> pAnonVariable) |>> VariableTerm
+    
+    let pGroundTerm : AspParser<GroundTerm> = 
+        ((pSymbolicConstant |>> SymbolicConstant)
+            <|> (pQuotedString |>> String)
+            // TODO - minus?
+            <|> (pNumber |>> Number))
+
+    let pBasicTerm : AspParser<Term> = 
+        (pGroundTerm |>> GroundTerm) <|> pVariableTerm
+
+    let pBasicTerms : AspParser<Term list> = 
+        sepBy1 pBasicTerm (token ",")
+
+    
+    let rec pTerm : AspParser<Term> = 
+         pExpressionTerm <|> pBasicTerm
+    
+    and pTerms : AspParser<Term list> = 
+        sepBy1 pTerm (token ",")
+
+    and pGroundExpr : AspParser<Expression> = 
+        pGroundTerm |>> GroundExpr
+
+    and pFunctionTerm : AspParser<Term> = 
+        pipe2 pPredicateName
+              (parens pTerms)
+              (fun name terms -> FunctionTerm(name, terms))
+    
+    and pExpressionTerm : AspParser<Term> =
+        pMulExpr |>> ExpressionTerm
+    
+    and pMulExpr : AspParser<Expression> = 
+        parse.Delay (fun () ->chainl1 pAddExpr pMulOp2)
+
+    and pAddExpr : AspParser<Expression> = 
+        chainl1 pFactor pAddOp2
+
+    and pFactor : AspParser<Expression> = 
+        parens pMulExpr <|> pGroundExpr
+
 
 

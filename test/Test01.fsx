@@ -46,4 +46,11 @@ let demo05 () : ParserResult<Identifier, unit> =
 let demo06 () : ParserResult<Identifier, unit> =
     run pQuotedString "\"Hello\" World"
 
+let demo07 () : ParserResult<Term, unit> =
+    run pTerm "3 * (1 + 100)"
+
+
+let demo08 () : ParserResult<Term, unit> =
+    run pTerm "3"
+
 
