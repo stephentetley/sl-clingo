@@ -20,9 +20,17 @@ module Base =
           Status : AnswerStatus 
         }
 
+    /// AtLeast is indicated by cling printing a plus suffix on the model count
+    type ModelCount = 
+        | AtLeast of int        
+        | Exactly of int
+
     type ClingoOutput = 
         { VersionNumber : string
           InputSource : string
           Answers : ClingoAnswer list
-        
+          Models : ModelCount
+          Calls : int
+          TimeStats : string
+          CpuTime : string
         }

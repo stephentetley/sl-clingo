@@ -29,7 +29,7 @@ module ParseClingo =
 
     let pSolving : ClingoParser<unit> = token "Solving..." |>> ignore
 
-    let pReadingFrom : ClingoParser<string> = token "Reading" >>. token "from" >>. many1CharsTill anyChar newline
+    let pReadingFrom : ClingoParser<string> = token "Reading" >>. token "from" >>. restOfLine true
 
     let pResult (field : string) (answerParser : ClingoParser<'a>) : ClingoParser<'a> = 
         token field >>. chartoken ':' >>. answerParser .>> spaces
@@ -50,9 +50,18 @@ module ParseClingo =
 
         pResult "Answer" body
 
+    let pModels : ClingoParser<ModelCount> = 
+        let body = 
+            pipe2 (pint32 |>> int)
+                    (opt (pchar '+'))
+                    (fun n optPlus -> match optPlus with | None -> Exactly n; | Some _ -> AtLeast n)
+        pResult "Models" body
+
     let pCalls : ClingoParser<int> = pResult "Calls" pint32
 
+    let pTimeStats : ClingoParser<string> = pResult "Time" (restOfLine false)
 
+    let pCpuTime : ClingoParser<string> = pResult "CPU Time" (restOfLine false)
 
     let pClingoOutput : ClingoParser<ClingoOutput> = 
         parse { 
@@ -60,9 +69,17 @@ module ParseClingo =
             let! input = pReadingFrom
             do! pSolving
             let! answers = many1 pAnswer
+            let! models = pModels
+            let! calls = pCalls
+            let! timeStats = pTimeStats
+            let! cpuTime = pCpuTime
             return { VersionNumber = vnum 
                      InputSource = input
                      Answers = answers
+                     Models = models
+                     Calls = calls
+                     TimeStats = timeStats
+                     CpuTime = cpuTime
                    }
         }
 

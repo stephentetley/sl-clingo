@@ -9,7 +9,7 @@
     <Compile Include="SLPotassco\AspCore\Parser.fs" />
     <Compile Include="SLPotassco\AspCore\Pretty.fs" />
     <Compile Include="SLPotassco\Potassco\Base.fs" />
-    <Compile Include="SLPotassco\Potassco\ParseClasp.fs" />
+    <Compile Include="SLPotassco\Potassco\ParseClingo.fs" />
     <Compile Include="SLPotassco\Potassco\Invoke.fs" />
   </ItemGroup>
 
