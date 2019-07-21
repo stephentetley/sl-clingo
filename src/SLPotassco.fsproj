@@ -9,13 +9,13 @@
     <Compile Include="SLPotassco\AspCore\Parser.fs" />
     <Compile Include="SLPotassco\AspCore\Pretty.fs" />
     <Compile Include="SLPotassco\Potassco\Base.fs" />
-    <Compile Include="SLPotassco\Potassco\ParseClingo.fs" />
+    <Compile Include="SLPotassco\Potassco\ParseClingoOutput.fs" />
     <Compile Include="SLPotassco\Potassco\Invoke.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FParsec" Version="1.0.4-RC3" />
-    <PackageReference Include="SLFormat" Version="1.0.2-alpha-20190616" />
+    <PackageReference Include="SLFormat" Version="1.0.2-alpha-20190721" />
   </ItemGroup>
 
 </Project>

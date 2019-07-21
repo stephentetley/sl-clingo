@@ -34,3 +34,8 @@ module Base =
           TimeStats : string
           CpuTime : string
         }
+
+    type ClingoFailure = 
+        { Error : string
+          Info : string
+        }
