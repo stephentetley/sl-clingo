@@ -8,8 +8,9 @@
     <Compile Include="SLPotassco\AspCore\Syntax.fs" />
     <Compile Include="SLPotassco\AspCore\Parser.fs" />
     <Compile Include="SLPotassco\AspCore\Pretty.fs" />
-    <Compile Include="SLPotassco\ParseClingo.fs" />
-    <Compile Include="SLPotassco\Invoke.fs" />
+    <Compile Include="SLPotassco\Clingo\Base.fs" />
+    <Compile Include="SLPotassco\Clingo\ParseClingo.fs" />
+    <Compile Include="SLPotassco\Clingo\Invoke.fs" />
   </ItemGroup>
 
   <ItemGroup>

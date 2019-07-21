@@ -4,7 +4,7 @@
 
 namespace SLPotassco.AspCore
 
-
+#nowarn "40"
 module Parser =
 
     
@@ -117,23 +117,33 @@ module Parser =
     let pBasicTerms : AspParser<Term list> = 
         sepBy1 pBasicTerm (token ",")
 
+
+    let consExpressionTerm (expr1 : Expression) : Term = 
+        match expr1 with
+        | GroundExpr groundTerm -> GroundTerm groundTerm
+        | _ -> ExpressionTerm expr1
     
+    // Term parser and related parsers
+
+
     let rec pTerm : AspParser<Term> = 
-         pExpressionTerm <|> pBasicTerm
+         (attempt pFunctionTerm) <|> pExpressionTerm <|>  pBasicTerm
     
     and pTerms : AspParser<Term list> = 
         sepBy1 pTerm (token ",")
 
+    
     and pGroundExpr : AspParser<Expression> = 
         pGroundTerm |>> GroundExpr
 
     and pFunctionTerm : AspParser<Term> = 
-        pipe2 pPredicateName
-              (parens pTerms)
-              (fun name terms -> FunctionTerm(name, terms))
+        parse.Delay (fun () -> 
+            pipe2 pPredicateName
+                (parens pTerms)
+                (fun name terms -> FunctionTerm(name, terms)))
     
     and pExpressionTerm : AspParser<Term> =
-        pMulExpr |>> ExpressionTerm
+        pMulExpr |>> consExpressionTerm
     
     and pMulExpr : AspParser<Expression> = 
         parse.Delay (fun () ->chainl1 pAddExpr pMulOp2)

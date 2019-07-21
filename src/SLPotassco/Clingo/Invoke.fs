@@ -2,7 +2,7 @@
 // License: BSD 3 Clause
 
 
-namespace SLPotassco
+namespace SLPotassco.Clingo
 
 module Invoke =
     
@@ -32,3 +32,4 @@ module Invoke =
 
     let clasp (workingDirectory : string) (options : CmdOpt list) (files : string list) (number : int option) = 
         SimpleInvoke.runProcess (Some workingDirectory) "clasp" (clingoArgs options files number)
+
