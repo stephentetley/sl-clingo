@@ -14,13 +14,15 @@ module Base =
         | Unsatisfiable
         | Unknown
 
-    type ClaspAnswer = 
+    type ClingoAnswer = 
         { Index : int 
           Terms : Term list 
           Status : AnswerStatus 
         }
 
-    type ClaspResult = 
-        { Answers : ClaspAnswer list
+    type ClingoOutput = 
+        { VersionNumber : string
+          InputSource : string
+          Answers : ClingoAnswer list
         
         }
