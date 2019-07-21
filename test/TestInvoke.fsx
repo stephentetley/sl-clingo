@@ -15,14 +15,14 @@ open SLFormat.CommandOptions
 #load @"..\src\SLPotassco\AspCore\Syntax.fs"
 #load @"..\src\SLPotassco\AspCore\Parser.fs"
 #load @"..\src\SLPotassco\AspCore\Pretty.fs"
-#load @"..\src\SLPotassco\Clingo\Base.fs"
-#load @"..\src\SLPotassco\Clingo\ParseClingo.fs"
-#load @"..\src\SLPotassco\Clingo\Invoke.fs"
+#load @"..\src\SLPotassco\Potassco\Base.fs"
+#load @"..\src\SLPotassco\Potassco\ParseClasp.fs"
+#load @"..\src\SLPotassco\Potassco\Invoke.fs"
 open SLPotassco.AspCore.Syntax
 open SLPotassco.AspCore.Parser
-open SLPotassco.Clingo.Base
-open SLPotassco.Clingo.ParseClingo
-open SLPotassco.Clingo.Invoke
+open SLPotassco.Potassco.Base
+open SLPotassco.Potassco.ParseClasp
+open SLPotassco.Potassco.Invoke
 
 let demoDirectory () = 
     System.IO.Path.Combine(__SOURCE_DIRECTORY__, @"..\demo\")

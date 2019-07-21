@@ -2,7 +2,7 @@
 // License: BSD 3 Clause
 
 
-namespace SLPotassco.Clingo
+namespace SLPotassco.Potassco
 
 module Base =
     
@@ -14,9 +14,13 @@ module Base =
         | Unsatisfiable
         | Unknown
 
-    type ClaspAnswer = ClaspAnswer of terms : Term list * status : AnswerStatus
+    type ClaspAnswer = 
+        { Index : int 
+          Terms : Term list 
+          Status : AnswerStatus 
+        }
 
-    type ClingoResult = 
+    type ClaspResult = 
         { Answers : ClaspAnswer list
         
         }

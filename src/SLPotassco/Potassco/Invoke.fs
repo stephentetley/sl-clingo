@@ -2,7 +2,7 @@
 // License: BSD 3 Clause
 
 
-namespace SLPotassco.Clingo
+namespace SLPotassco.Potassco
 
 module Invoke =
     
