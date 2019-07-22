@@ -4,7 +4,7 @@
 
 namespace SLPotassco.Potassco
 
-module ParseClingo =
+module ParseClingoOutput =
     
     open System
 
@@ -84,3 +84,13 @@ module ParseClingo =
         }
 
     // The plus symbol for Models is explained on page 15 of the Potassco manual
+
+    let pERROR : ClingoParser<string> = 
+        pResult "*** ERROR" (restOfLine false)
+
+    let pInfo : ClingoParser<string> = 
+        pResult "*** Info" (restOfLine false)
+
+    let pClingoFailure : ClingoParser<ClingoFailure> = 
+        pipe2 pERROR pInfo
+                (fun msg info -> { Error = msg; Info = info })
