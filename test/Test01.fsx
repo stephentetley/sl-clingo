@@ -3,7 +3,7 @@
 
 #r "netstandard"
 
-#I @"C:\Users\stephen\.nuget\packages\FParsec\1.0.4-rc3\lib\portable-net45+win8+wp8+wpa81"
+#I @"C:\Users\stephen\.nuget\packages\FParsec\1.0.4-rc3\lib\netstandard1.6"
 #r "FParsec"
 #r "FParsecCS"
 open FParsec
@@ -37,7 +37,7 @@ let demoDirectory () =
 //    clingo demoDir [] ["toh_ins.lp"; "toh_enc.lp"] None
 
 let demo05 () : ParserResult<Identifier, unit> = 
-    run pIdentifier "p"
+    run pIdentifier "potassco_identifier "
 
 let demo06 () : ParserResult<Identifier, unit> =
     run pQuotedString "\"Hello\" World"

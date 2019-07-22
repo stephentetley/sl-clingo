@@ -7,6 +7,7 @@ namespace SLPotassco.AspCore
 #nowarn "40"
 module Parser =
 
+    open System
     
     open FParsec
 
@@ -29,18 +30,21 @@ module Parser =
     let parens (p1 : AspParser<'a>) : AspParser<'a> = 
         between (chartoken '(') (chartoken ')') p1
 
+    let private makeIdentifierParser (firstChar : AspParser<char>) : AspParser<string> = 
+        parse { 
+            let! start = firstChar
+            let! rest = many (letter <|> digit <|> pchar '_')
+            return (String.Concat (Array.ofList (start :: rest)))
+        }
 
     let pIdentifier : AspParser<string> = 
-        let opts = new IdentifierOptions()
-        lexeme (identifier opts)
+        lexeme (makeIdentifierParser letter)
 
     let pSymbolicConstant : AspParser<string> = 
-        let opts = new IdentifierOptions(isAsciiIdStart = isAsciiLower)
-        lexeme (identifier opts)
+        lexeme (makeIdentifierParser lower)
     
     let pVariable : AspParser<string> = 
-        let opts = new IdentifierOptions(isAsciiIdStart = isAsciiUpper)
-        lexeme (identifier opts)
+        lexeme (makeIdentifierParser upper)
 
     let pQuotedString : AspParser<string> =
         let escape = pchar '\\' >>. pchar '"' >>. preturn "\\\""
