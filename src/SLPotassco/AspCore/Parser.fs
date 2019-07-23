@@ -56,7 +56,7 @@ module Parser =
         token "_"
 
     let pNumber : AspParser<int> = 
-        lexeme (puint32 |>> int)
+        lexeme (pint32 |>> int)
 
 
     let pNeg : AspParser<string> = 
@@ -112,7 +112,6 @@ module Parser =
     let pGroundTerm : AspParser<GroundTerm> = 
         ((pSymbolicConstant |>> SymbolicConstant)
             <|> (pQuotedString |>> String)
-            // TODO - minus?
             <|> (pNumber |>> Number))
 
     let pBasicTerm : AspParser<Term> = 

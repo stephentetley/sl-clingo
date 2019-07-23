@@ -7,7 +7,16 @@ namespace SLPotassco.Potassco
 module Base =
     
 
-    open SLPotassco.AspCore.Syntax
+    // open SLPotassco.AspCore.Syntax
+
+    type GroundTerm = 
+        | SymbolicConstant of string
+        | String of string
+        | Number of int64
+
+    type AnswerTerm = 
+        | AnswerTerm of name : string * body : GroundTerm list
+
 
     type AnswerStatus = 
         | Satisfiable
@@ -16,7 +25,7 @@ module Base =
 
     type ClingoAnswer = 
         { Index : int 
-          Terms : Term list 
+          AnswerTerms : AnswerTerm list 
           Status : AnswerStatus 
         }
 
@@ -39,3 +48,5 @@ module Base =
         { Error : string
           Info : string
         }
+
+

@@ -53,4 +53,6 @@ let demo03b () =
     let demoDir = demoDirectory ()
     runClingo demoDir (Some 0) [literal "--BAD"] ["toh_ins.lp"; "toh_enc.lp"]
 
-    // run pClingoFailure
+let demo04 () = 
+    let demoDir = demoDirectory ()
+    runClingo demoDir None [] ["negative_numbers.lp"]

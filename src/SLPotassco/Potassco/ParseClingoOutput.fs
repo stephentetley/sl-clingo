@@ -10,10 +10,60 @@ module ParseClingoOutput =
 
     open FParsec
 
-    open SLPotassco.AspCore.Parser
+    // open SLPotassco.AspCore.Parser
     open SLPotassco.Potassco.Base
 
-    type ClingoParser<'ans> = AspParser<'ans>
+    type ClingoParser<'ans> = Parser<'ans, unit>
+
+    let lexeme (parser : ClingoParser<'a>) : ClingoParser<'a> = 
+        parser .>> spaces
+    
+    let token (str : string) : ClingoParser<string> = 
+        lexeme (pstring str)
+
+    let chartoken (ch : char) : ClingoParser<char> = 
+        lexeme (pchar ch)
+
+    let parens (p1 : ClingoParser<'a>) : ClingoParser<'a> = 
+        between (chartoken '(') (chartoken ')') p1
+
+    let private makeIdentifierParser (firstChar : ClingoParser<char>) : ClingoParser<string> = 
+        parse { 
+            let! start = firstChar
+            let! rest = many (letter <|> digit <|> pchar '_')
+            return (String.Concat (Array.ofList (start :: rest)))
+        }
+
+    let pIdentifier : ClingoParser<string> = 
+        lexeme (makeIdentifierParser letter)
+
+    let pSymbolicConstant : ClingoParser<string> = 
+        lexeme (makeIdentifierParser lower)
+
+    let pQuotedString : ClingoParser<string> =
+        let escape = pchar '\\' >>. pchar '"' >>. preturn "\\\""
+        let body1 = escape <|> (noneOf ['\\'; '"'] |>> string)
+        let qString = pchar '"' >>. many body1 .>> pchar '"'
+        lexeme (qString |>> String.concat "")
+
+    let pNumber : ClingoParser<int64> = 
+        lexeme pint64
+
+    let pPredicateName : ClingoParser<string> = 
+        pIdentifier <|> pQuotedString 
+
+    let pGroundTerm : ClingoParser<GroundTerm> = 
+        ((pSymbolicConstant |>> SymbolicConstant)
+            <|> (pQuotedString |>> String)
+            <|> (pNumber |>> Number))
+
+    let pGroundTerms : ClingoParser<GroundTerm list> = 
+        sepBy1 pGroundTerm (chartoken ',')
+
+    let pAnswerTerm: ClingoParser<AnswerTerm> = 
+        pipe2 pPredicateName
+                (parens pGroundTerms)
+                (fun name terms -> AnswerTerm(name, terms))
 
     // let pWhiteToNewline = (many (anyOf " \t")) >>. newline
 
@@ -44,9 +94,9 @@ module ParseClingoOutput =
     let pAnswer : ClingoParser<ClingoAnswer> = 
         let body = 
             pipe3 (lexeme pint32)
-                    (manyTill pTerm (lookAhead pStatus))
+                    (manyTill pAnswerTerm (lookAhead pStatus))
                     pStatus
-                    (fun idx terms status -> { Index = idx; Terms = terms; Status = status})
+                    (fun idx terms status -> { Index = idx; AnswerTerms = terms; Status = status})
 
         pResult "Answer" body
 
