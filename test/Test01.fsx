@@ -54,4 +54,30 @@ let demo09 () : ParserResult<Term, unit> =
 
 let demo10 () : ParserResult<Term, unit> =
     run pTerm "hello(\"World\", 1)"
+    
+    
+// Maybe these would be useful, maybe not
+
+let tryGetString (ix:int) (term:AnswerTerm) : string option = 
+    match term with
+    | AnswerTerm(_, vals) -> 
+        match List.tryItem ix vals with
+        | Some (String str)  -> Some str
+        | _ -> None
+
+
+let tryGetInt64 (ix:int) (term:AnswerTerm) : int64 option = 
+    match term with
+    | AnswerTerm(_, vals) -> 
+        match List.tryItem ix vals with
+        | Some (Number n)  -> Some n
+        | _ -> None
+
+let tryGetSymbolicConstant (ix:int) (term:AnswerTerm) : string option = 
+    match term with
+    | AnswerTerm(_, vals) -> 
+        match List.tryItem ix vals with
+        | Some (SymbolicConstant str)  -> Some str
+        | _ -> None
+    
 

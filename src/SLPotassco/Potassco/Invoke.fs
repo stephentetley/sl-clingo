@@ -35,6 +35,13 @@ module Invoke =
         | SysFail of exn
         | ClingoFail of ClingoFailure
         | OutputParseFail of string
+        
+
+    let clingoFailureDescription (clingoFailure : RunClingoFailure) : string = 
+        match clingoFailure with
+        | SysFail exc -> sprintf "*** SYSTEM: %s" exc.Message
+        | ClingoFail x -> sprintf "%s\n%s" x.Error x.Info
+        | OutputParseFail msg -> sprintf "*** Parsing failure: %s" msg    
 
 
     let clingo (workingDirectory : string) 
