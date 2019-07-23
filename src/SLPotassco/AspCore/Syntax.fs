@@ -6,6 +6,9 @@ namespace SLPotassco.AspCore
 
 module Syntax =
 
+    // Note - ASP Core syntax is probably a bit heavy for representing 
+    // output terms reported for #show directives in Clingo.
+
     type Identifier = string
 
     type ArithOp = 

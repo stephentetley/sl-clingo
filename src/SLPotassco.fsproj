@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.0.0-alpha-20190722b</Version>
+    <Version>1.0.0-alpha-20190723</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>F# interface to the Potassco Answer Set Programming tools (principally clingo)</Description>
   </PropertyGroup>
