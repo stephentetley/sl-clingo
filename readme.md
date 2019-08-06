@@ -1,3 +1,3 @@
-# sl-potassco
+# sl-clingo
 
-F# interface to the Potassco Answer Set Programming tools (principally clingo).
+F# interface to Clingo from the Potassco Answer Set Programming tools
