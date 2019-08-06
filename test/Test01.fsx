@@ -12,11 +12,11 @@ open FParsec
 #r @"SLFormat.dll"
 open SLFormat.CommandOptions
 
-#load @"..\src\SLPotassco\AspCore\Syntax.fs"
-#load @"..\src\SLPotassco\AspCore\Parser.fs"
-#load @"..\src\SLPotassco\AspCore\Pretty.fs"
-open SLPotassco.AspCore.Syntax
-open SLPotassco.AspCore.Parser
+#load @"..\src\SLClingo\AspCore\Syntax.fs"
+#load @"..\src\SLClingo\AspCore\Parser.fs"
+#load @"..\src\SLClingo\AspCore\Pretty.fs"
+open SLClingo.AspCore.Syntax
+open SLClingo.AspCore.Parser
 
 let demoDirectory () = 
     System.IO.Path.Combine(__SOURCE_DIRECTORY__, @"..\demo\")
@@ -58,26 +58,26 @@ let demo10 () : ParserResult<Term, unit> =
     
 // Maybe these would be useful, maybe not
 
-let tryGetString (ix:int) (term:AnswerTerm) : string option = 
-    match term with
-    | AnswerTerm(_, vals) -> 
-        match List.tryItem ix vals with
-        | Some (String str)  -> Some str
-        | _ -> None
+//let tryGetString (ix:int) (term:AnswerTerm) : string option = 
+//    match term with
+//    | AnswerTerm(_, vals) -> 
+//        match List.tryItem ix vals with
+//        | Some (String str)  -> Some str
+//        | _ -> None
 
 
-let tryGetInt64 (ix:int) (term:AnswerTerm) : int64 option = 
-    match term with
-    | AnswerTerm(_, vals) -> 
-        match List.tryItem ix vals with
-        | Some (Number n)  -> Some n
-        | _ -> None
+//let tryGetInt64 (ix:int) (term:AnswerTerm) : int64 option = 
+//    match term with
+//    | AnswerTerm(_, vals) -> 
+//        match List.tryItem ix vals with
+//        | Some (Number n)  -> Some n
+//        | _ -> None
 
-let tryGetSymbolicConstant (ix:int) (term:AnswerTerm) : string option = 
-    match term with
-    | AnswerTerm(_, vals) -> 
-        match List.tryItem ix vals with
-        | Some (SymbolicConstant str)  -> Some str
-        | _ -> None
+//let tryGetSymbolicConstant (ix:int) (term:AnswerTerm) : string option = 
+//    match term with
+//    | AnswerTerm(_, vals) -> 
+//        match List.tryItem ix vals with
+//        | Some (SymbolicConstant str)  -> Some str
+//        | _ -> None
     
 

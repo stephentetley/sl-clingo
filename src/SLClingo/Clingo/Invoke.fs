@@ -2,7 +2,7 @@
 // License: BSD 3 Clause
 
 
-namespace SLPotassco.Potassco
+namespace SLClingo.Clingo
 
 module Invoke =
     
@@ -11,8 +11,8 @@ module Invoke =
     open SLFormat.CommandOptions
     open SLFormat.CommandOptions.SimpleInvoke
 
-    open SLPotassco.Potassco.Base
-    open SLPotassco.Potassco.ParseClingoOutput
+    open SLClingo.Clingo.Base
+    open SLClingo.Clingo.ParseClingoOutput
     
     /// To be added to SLFormat...
     let intLiteral (i : int) : CmdOpt = 

@@ -9,8 +9,4 @@
     <None Include="TestInvoke.fsx" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FParsec" Version="1.0.4-RC3" />
-  </ItemGroup>
-
 </Project>

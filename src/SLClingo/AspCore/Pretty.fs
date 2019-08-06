@@ -2,14 +2,14 @@
 // License: BSD 3 Clause
 
 
-namespace SLPotassco.AspCore
+namespace SLClingo.AspCore
 
 module Pretty =
 
     
     open SLFormat.Pretty            // Lib: sl-format
 
-    open SLPotassco.AspCore.Syntax
+    open SLClingo.AspCore.Syntax
 
     let ppIdentifier (name : Identifier) : Doc = text name
 

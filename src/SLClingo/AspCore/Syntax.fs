@@ -2,7 +2,7 @@
 // License: BSD 3 Clause
 
 
-namespace SLPotassco.AspCore
+namespace SLClingo.AspCore
 
 module Syntax =
 

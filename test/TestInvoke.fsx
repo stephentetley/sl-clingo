@@ -15,17 +15,17 @@ open FParsec
 open SLFormat.CommandOptions
 open SLFormat.CommandOptions.SimpleInvoke
 
-#load @"..\src\SLPotassco\AspCore\Syntax.fs"
-#load @"..\src\SLPotassco\AspCore\Parser.fs"
-#load @"..\src\SLPotassco\AspCore\Pretty.fs"
-#load @"..\src\SLPotassco\Potassco\Base.fs"
-#load @"..\src\SLPotassco\Potassco\ParseClingoOutput.fs"
-#load @"..\src\SLPotassco\Potassco\Invoke.fs"
-open SLPotassco.AspCore.Syntax
-open SLPotassco.AspCore.Parser
-open SLPotassco.Potassco.Base
-open SLPotassco.Potassco.ParseClingoOutput
-open SLPotassco.Potassco.Invoke
+#load @"..\src\SLClingo\AspCore\Syntax.fs"
+#load @"..\src\SLClingo\AspCore\Parser.fs"
+#load @"..\src\SLClingo\AspCore\Pretty.fs"
+#load @"..\src\SLClingo\Clingo\Base.fs"
+#load @"..\src\SLClingo\Clingo\ParseClingoOutput.fs"
+#load @"..\src\SLClingo\Clingo\Invoke.fs"
+open SLClingo.AspCore.Syntax
+open SLClingo.AspCore.Parser
+open SLClingo.Clingo.Base
+open SLClingo.Clingo.ParseClingoOutput
+open SLClingo.Clingo.Invoke
 
 let demoDirectory () = 
     System.IO.Path.Combine(__SOURCE_DIRECTORY__, @"..\demo\")

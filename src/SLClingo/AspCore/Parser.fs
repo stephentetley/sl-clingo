@@ -2,7 +2,7 @@
 // License: BSD 3 Clause
 
 
-namespace SLPotassco.AspCore
+namespace SLClingo.AspCore
 
 #nowarn "40"
 module Parser =
@@ -11,7 +11,7 @@ module Parser =
     
     open FParsec
 
-    open SLPotassco.AspCore.Syntax
+    open SLClingo.AspCore.Syntax
 
     type AspParser<'ans> = Parser<'ans, unit>
 

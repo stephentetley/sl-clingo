@@ -2,12 +2,10 @@
 // License: BSD 3 Clause
 
 
-namespace SLPotassco.Potassco
+namespace SLClingo.Clingo
 
 module Base =
     
-
-    // open SLPotassco.AspCore.Syntax
 
     type GroundTerm = 
         | SymbolicConstant of string

@@ -2,7 +2,7 @@
 // License: BSD 3 Clause
 
 
-namespace SLPotassco.Potassco
+namespace SLClingo.Clingo
 
 module ParseClingoOutput =
     
@@ -11,7 +11,7 @@ module ParseClingoOutput =
     open FParsec
 
     // open SLPotassco.AspCore.Parser
-    open SLPotassco.Potassco.Base
+    open SLClingo.Clingo.Base
 
     type ClingoParser<'ans> = Parser<'ans, unit>
 
